@@ -1,6 +1,7 @@
 import pygame
 from states import *
 import images
+import utility
 
 
 class Player:
@@ -23,6 +24,9 @@ class Player:
 
         self.step_no = 0
         self.steps = get_num_steps_player(self.state)
+
+    def get_position(self):
+        return tuple([self.x, self.y])
 
     def move(self, keys):
 
@@ -96,7 +100,7 @@ class Player:
             else:
                 self.x -= self.walking_speed
 
-    def set_state(self, state):
+    def set_state(self, state, mouse_pos=None):
         if self.state not in [state,
                               PlayerStates.attacking,
                               PlayerStates.casting,
@@ -105,6 +109,9 @@ class Player:
             self.state = state
             self.step_no = 0
             self.steps = get_num_steps_player(state)
+
+            if state in [PlayerStates.attacking, PlayerStates.casting]:
+                self.change_direction(utility.get_angle(self.x, self.y, mouse_pos[0], mouse_pos[1]))
 
     def force_state(self, state):
         self.state = state
@@ -125,6 +132,26 @@ class Player:
     def is_moving(self):
         return self.moving_up or self.moving_right or self.moving_down or self.moving_left
 
+    def change_direction(self, angle):
+        if 338 <= angle < 23:
+            self.direction = Directions.e
+        elif 23 <= angle < 68:
+            self.direction = Directions.ne
+        elif 68 <= angle < 113:
+            self.direction = Directions.n
+        elif 113 <= angle < 158:
+            self.direction = Directions.nw
+        elif 158 <= angle < 203:
+            self.direction = Directions.w
+        elif 203 <= angle < 248:
+            self.direction = Directions.sw
+        elif 248 <= angle < 293:
+            self.direction = Directions.s
+        elif 293 <= angle < 338:
+            self.direction = Directions.se
+        else:
+            self.direction = Directions.e
+
     def draw(self, screen):
 
         self.step_no += 1
@@ -134,4 +161,4 @@ class Player:
             else:
                 self.step_no = 0
 
-        screen.blit(images.get_player_image(self.state, self.direction, self.step_no), (self.x, self.y))
+        screen.blit(images.get_player_image(self.state, self.direction, self.step_no), (self.x - 56, self.y - 56))

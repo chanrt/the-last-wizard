@@ -1,5 +1,6 @@
 import pygame
 from player import Player
+from projectile import Projectile
 from states import *
 import images
 
@@ -11,8 +12,11 @@ def game_loop():
     screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
     bg_color = pygame.Color("black")
 
+    projectiles = []
+
     player = Player()
     images.load_player_images()
+    images.load_projectile_images()
 
     running = True
     while running:
@@ -27,21 +31,26 @@ def game_loop():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     quit_game()
-                if event.key == pygame.K_h:
-                    player.set_state(PlayerStates.hit)
-                if event.key == pygame.K_i:
-                    player.set_state(PlayerStates.death)
 
             if event.type == pygame.MOUSEBUTTONDOWN:
+                mouse_pos = pygame.mouse.get_pos()
                 if event.button == 1:
-                    mouse_pos = pygame.mouse.get_pos()
-                    player.set_state(PlayerStates.attacking)
+                    player.set_state(PlayerStates.attacking, mouse_pos)
+                    projectile = Projectile(Projectiles.flame, player.get_position(), mouse_pos)
+                    projectiles.append(projectile)
+
                 elif event.button == 3:
-                    player.set_state(PlayerStates.casting)
+                    player.set_state(PlayerStates.casting, mouse_pos)
 
         if player.can_move():
             player.move(keys_pressed)
         player.draw(screen)
+
+        for projectile in projectiles:
+            projectile.move()
+            projectile.draw(screen)
+            if projectile.step_no == 40:
+                projectiles.remove(projectile)
 
         pygame.display.flip()
 

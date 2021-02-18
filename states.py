@@ -19,6 +19,11 @@ class Directions:
     nw = 7
 
 
+class Projectiles:
+    flame = 0
+    frost = 1
+
+
 def get_num_steps_player(state):
 
     if state in [PlayerStates.paused, PlayerStates.walking, PlayerStates.running, PlayerStates.hit]:
@@ -27,6 +32,7 @@ def get_num_steps_player(state):
         return 13
 
 
+projectile_names = ["flame", "frost"]
 player_states = ["paused", "walking", "running", "attack", "magic spelling", "been hit", "tipping over"]
 directions = ["n", "ne", "e", "se", "s", "sw", "w", "nw"]
 eight_player_steps = ["0000", "0001", "0002", "0003", "0004", "0005", "0006", "0007"]
