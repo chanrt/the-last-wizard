@@ -24,6 +24,17 @@ class Projectiles:
     frost = 1
 
 
+class Spells:
+    explosion = 0
+    purple_fire = 1
+    wings = 2
+
+
+class Objects:
+    large_rock = 0
+    road = 1
+
+
 def get_num_steps_player(state):
 
     if state in [PlayerStates.paused, PlayerStates.walking, PlayerStates.running, PlayerStates.hit]:
@@ -32,9 +43,11 @@ def get_num_steps_player(state):
         return 13
 
 
-projectile_names = ["flame", "frost"]
 player_states = ["paused", "walking", "running", "attack", "magic spelling", "been hit", "tipping over"]
 directions = ["n", "ne", "e", "se", "s", "sw", "w", "nw"]
+spell_names = ["explosion", "purple_fire", "wings"]
+projectile_names = ["flame", "frost"]
+object_names = ["large_rock", "road"]
 eight_player_steps = ["0000", "0001", "0002", "0003", "0004", "0005", "0006", "0007"]
 
 thirteen_player_steps = eight_player_steps[:]

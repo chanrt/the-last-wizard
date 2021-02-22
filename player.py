@@ -6,10 +6,13 @@ import utility
 
 class Player:
 
-    def __init__(self):
+    def __init__(self, position):
 
-        self.x = 500
-        self.y = 500
+        self.x = position[0] / 2
+        self.y = position[1] / 2
+
+        self.move_x = 0
+        self.move_y = 0
 
         self.walking_speed = 2
         self.running_speed = 4
@@ -81,24 +84,24 @@ class Player:
         # Determining position
         if self.moving_up:
             if self.state == PlayerStates.running:
-                self.y -= self.running_speed
+                self.move_y -= self.running_speed
             else:
-                self.y -= self.walking_speed
+                self.move_y -= self.walking_speed
         if self.moving_right:
             if self.state == PlayerStates.running:
-                self.x += self.running_speed
+                self.move_x += self.running_speed
             else:
-                self.x += self.walking_speed
+                self.move_x += self.walking_speed
         if self.moving_down:
             if self.state == PlayerStates.running:
-                self.y += self.running_speed
+                self.move_y += self.running_speed
             else:
-                self.y += self.walking_speed
+                self.move_y += self.walking_speed
         if self.moving_left:
             if self.state == PlayerStates.running:
-                self.x -= self.running_speed
+                self.move_x -= self.running_speed
             else:
-                self.x -= self.walking_speed
+                self.move_x -= self.walking_speed
 
     def set_state(self, state, mouse_pos=None):
         if self.state not in [state,
@@ -112,6 +115,8 @@ class Player:
 
             if state in [PlayerStates.attacking, PlayerStates.casting]:
                 self.change_direction(utility.get_angle(self.x, self.y, mouse_pos[0], mouse_pos[1]))
+                self.move_x = 0
+                self.move_y = 0
 
     def force_state(self, state):
         self.state = state
@@ -122,12 +127,17 @@ class Player:
         if self.state not in [PlayerStates.attacking, PlayerStates.casting]:
             return True
 
+    def get_move(self):
+        return tuple([self.move_x, self.move_y])
+
     def stop_moving(self):
 
         self.moving_up = False
         self.moving_right = False
         self.moving_down = False
         self.moving_left = False
+        self.move_x = 0
+        self.move_y = 0
 
     def is_moving(self):
         return self.moving_up or self.moving_right or self.moving_down or self.moving_left

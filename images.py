@@ -5,6 +5,8 @@ from states import *
 images_bg_color = (105, 74, 46)
 player_images = []
 projectile_images = []
+spell_images = []
+object_images = []
 
 
 def load_player_images():
@@ -32,11 +34,12 @@ def load_projectile_images():
     for projectile_name in projectile_names:
         temp_collage = pygame.image.load("sprites/projectiles/" + projectile_name + ".png")
         temp_array = []
-        row_no, col_no = 0, 0
+        row_no, col_no = 1, 0
 
         while row_no < 10:
             temp_surface = pygame.Surface((128, 96))
-            temp_surface.blit(temp_collage, (0, 0), pygame.Rect(col_no * 129, row_no * 96, 128, 96))
+            temp_surface.blit(temp_collage, (0, 0), pygame.Rect(col_no * 128, row_no * 96, 128, 96))
+            temp_surface.set_colorkey((0, 0, 0))
             temp_array.append(temp_surface)
 
             col_no += 1
@@ -47,5 +50,18 @@ def load_projectile_images():
         projectile_images.append(temp_array)
 
 
+def load_spell_images():
+
+    for spell_name in spell_names:
+        spell_images.append(pygame.image.load("sprites/spells/" + spell_name + ".png"))
+
+
+def load_object_images():
+
+    for object_name in object_names:
+        object_images.append(pygame.image.load("sprites/objects/" + object_name + ".png"))
+
+
 def get_player_image(player_state, player_direction, player_step_no):
+
     return player_images[player_state][player_direction][player_step_no]

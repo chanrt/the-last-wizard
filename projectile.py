@@ -23,11 +23,13 @@ class Projectile:
         self.speed_y = self.speed * math.sin(math.radians(self.angle))
 
         self.step_no = -10
-        self.steps = 40
+        self.steps = 36
 
-    def move(self):
+    def move(self, move):
         self.x += self.speed_x
         self.y -= self.speed_y
+        self.x += move[0]
+        self.x -= move[1]
 
     def draw(self, screen):
         self.step_no += 1
